@@ -32,7 +32,6 @@ scanf("%s", inputstr);
     }
  
 
-
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(5000);
 //  serv_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -54,28 +53,6 @@ printf("Sent.\n");
     {
       printf("\n Error : Fputs error");
     }
-	
-//	printf("From server: %s\n", recvBuff);
-//printf("%s\n", recvBuff);
-	//ADDED CODE
-    //    char inputstr[10];
-  //      int readin;
-	
-//	printf("Enter 'Hi' or 'Bye' to send to the server:\n");
-    //    scanf("%s", inputstr);
-        //now to send inputstr to server....
-        //strcpy(recvBuff, inputstr);
-  //      write(sockfd, inputstr, strlen(inputstr));
-//	printf("Sent message to server\n");
-//	readin = read(sockfd, recvBuff, strlen(recvBuff));
-//	printf("Server says: %s\n", recvBuff);
-
-	//read(sockfd, recvBuff, strlen(recvBuff));
-	//printf("output from server: %s", recvBuff);
-//char inputstr[100];
-//printf("Enter 'Hi' or 'Bye' to send to the server:");
-//scanf("%s\n", inputstr);
-//printf("Sending: %s\n", inputstr);
 
       printf("\n");
     }
@@ -84,17 +61,6 @@ printf("Sent.\n");
     {
       printf("\n Read Error \n");
     }
- 
-/*
-//ADDED CODE
-	char inputstr[10];
-	printf("Enter 'Hi' or 'Bye' to send to the server:\n");
-	scanf("%s", inputstr);
-	//now to send inputstr to server....	strcpy(recvBuff, inputstr);
- */
-/*char inputstr[100];
-printf("Enter 'Hi' or 'Bye' to send to the server:");
-scanf("%s\n", inputstr);
-printf("Sending: %s\n", inputstr);
+
  */ return 0;
 }

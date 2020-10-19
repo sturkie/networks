@@ -51,20 +51,7 @@ char lookstr[4];
   while(1)
     {
       connfd = accept(listenfd, (struct sockaddr*)NULL ,NULL); // accept awaiting request
-	printf("Connected to server\n");	
-	//new code
-/*	char inputstr[10];
-	if(read(connfd, inputstr,strlen(inputstr))>0){
-	//success of reading
-	//printf("success\n");
-	strcpy(sendBuff, "input received");
-	write(connfd, sendBuff, strlen(sendBuff));
-}*/
-	//else{printf("error reading\n");}	 
-	//char recvBuff[100];
-	//int n_read;
-	//read(connfd,  recvBuff, strlen(recvBuff));
-	//printf("read\n");
+	printf("Connected to server\n");
   
 //      strcpy(sendBuff, "Message from server33");
 //      write(connfd, sendBuff, strlen(sendBuff));
@@ -78,8 +65,7 @@ char lookstr[4];
 		strcpy(lookstr, "Bye");
 }
 	
-//	strncpy(lookstr, sendBuff, 4);	
-//	printf("lookstr: %s, hi: %s, bye: %s\n", lookstr, hi, bye);
+        
 	if(strcmp(lookstr, hi)==0){//match
 		printf("Client says Hi\n");
 		strcpy(sendBuff, "Server says Hi");
@@ -91,14 +77,6 @@ char lookstr[4];
 		write(connfd, sendBuff, strlen(sendBuff));
 		
 	}
-
-
-//	int readin;
-	//readin = read(connfd, sendBuff, strlen(sendBuff));
-	//printf("%s\n", sendBuff);
-//	char test[100] = "server says hellooo";
-	//write(connfd, test, strlen(test));
-	//printf("sent a message from server\n"); 
 
       close(connfd);    
       sleep(1);
