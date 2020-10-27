@@ -47,9 +47,10 @@ def clientthread(conn):
 		if sendall_msg in str(data):
 			print 'Sending to all'
 			sendall(data[(len(sendall_msg)):])
+		else:
+			conn.sendall(reply)
 		if not data:
 			break
-		conn.sendall(reply)
 	conn.close()
 
 #new function to output to all
