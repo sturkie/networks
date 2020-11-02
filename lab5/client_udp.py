@@ -25,9 +25,9 @@ def udt_send(sndpkt):
 	error = random.random()
 
 	#set the whole string
-	s.sendto(str(seq)+' '+msg,(host,port))
-	#s.sendto(str(seq)+' '+msg + '' + checksum,(host,port))
-	print 'Sent: ', str(seq),' ', msg
+	#s.sendto(str(seq)+' '+msg,(host,port))
+	s.sendto(str(seq)+' '+msg + '' + checksum,(host,port))
+	print 'Sent: ', str(seq),' ', msg, '', checksum
 	try:
 		#receive data from client (data, addr)
 		d = s.recvfrom(1024)
