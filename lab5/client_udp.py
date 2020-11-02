@@ -19,7 +19,7 @@ s.settimeout(1)
 seq = 0
 
 
-def udt_send(sndpkt)
+def udt_send(sndpkt):
 	msg = 'Message #' + sndpkt(i)
 	checksum = ip_checksum(sndpkt)
 	error = random.random()
@@ -44,7 +44,7 @@ def udt_send(sndpkt)
 	except timeout:
 		print 'Timeout'
 
-def rdt_send(data)
+def rdt_send(data):
     sndpkt = make_pkt(0, data, checksum)
     udt_send(sndpkt)
     start_timer
