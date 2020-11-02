@@ -19,11 +19,9 @@ s.settimeout(1)
 seq = 0
 
 
-def udt_send(pkt)
-	msg = raw_input('Enter message to send: ')
-
-	#msg = 'Message #' + str(i)
-	#checksum eventually goes here
+def udt_send(sndpkt)
+	msg = 'Message #' + sndpkt(i)
+	checksum = ip_checksum(sndpkt)
 	error = random.random()
 
 	#set the whole string
