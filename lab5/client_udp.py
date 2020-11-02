@@ -2,7 +2,7 @@ from socket import timeout
 import socket
 import sys
 import time
-#from check import ip_checksum
+from check import ip_checksum
 import random
 
 #create dgram udp socket
