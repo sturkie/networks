@@ -18,10 +18,6 @@ port = 7743;
 s.settimeout(1)
 seq = 0
 
-def rdt_send(data)
-    sndpkt = make_pkt(0, data, checksum)
-    udt_send(sndpkt)
-    start_timer
 
 def udt_send(pkt)
 	msg = raw_input('Enter message to send: ')
@@ -49,3 +45,8 @@ def udt_send(pkt)
 		sys.exit()
 	except timeout:
 		print 'Timeout'
+
+def rdt_send(data)
+    sndpkt = make_pkt(0, data, checksum)
+    udt_send(sndpkt)
+    start_timer
