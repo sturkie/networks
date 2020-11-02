@@ -25,11 +25,10 @@ except socket.error, msg:
 print 'Socket bind complete'
 
 #keep talking w client
-while 1:
+def deliver_data(data):
 	#receive data from client (data,addr)
-	d = s.recvfrom(1024)
-	data = d[0]
-	addr = d[1]
+	d = data[0]
+	addr = data[1]
     seq=data[0]
     msg=data[2:12]
     checksum=data[12:]
@@ -45,10 +44,18 @@ while 1:
 	#reply = 'OK . . . ' + data
 
     if str(expecting)==str(seq) and str(checksum)==str(checksum2):
-        s.sendto('ACK for ' + d[0], d[1])
+        s.sendto('ACK for ' + data[0], data[1])
         expecting = 1 - expecting
 
 	#s.sendto(reply, addr)
 	#print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
+
+def rdt_recv(revpkt):
+    extract(revpkt,data)
+    deliver_data(data)
+    
+while 1:
+    revpkt = s.recvfrom(1024)
+    rdt_recv(revpkt)
 
 s.close()

@@ -48,3 +48,7 @@ def rdt_send(data):
     sndpkt = make_pkt(0, data, checksum)
     udt_send(sndpkt)
     start_timer
+    
+while(1):
+    data = raw_input('Enter message to send : ')
+    rdt_send(data)
