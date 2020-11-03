@@ -119,10 +119,6 @@ def receive(sock):
         #idea: extract the ACK value from the received msg
         in_seq_num, msg = extract(data)
         
-        #if not isACK(in_seq_num, base):
-            #print('No ACK')
-            #return False
-        
         ack = in_seq_num
         
         # If we get an ACK for the first in-flight packet
