@@ -84,7 +84,7 @@ def udt_send(sndpkt):
         #print 'This is str: ' + str
         #checksum = ip_checksum(str)
         #Set the whole string
-        print 'Sending: ' + str(seq) + '|' + msg + ';' + 'false'
+#        print 'Sending: ' + str(seq) + '|' + msg + ';' + 'false'
         s.sendto(str(seq) + '|' + msg + ';' + 'false', (host, port))
         
         #s.sendto(sndpkt,(host,port))

@@ -111,7 +111,8 @@ def rdt_send(data):
     sndpkt = make_pkt(0,data,checksum)
     #send packet
     udt_send(sndpkt)
-    
+   
+    time.sleep(1) 
     try:
         #print 'About to receive input'
         d = s.recvfrom(1024) #update rcvpkt
