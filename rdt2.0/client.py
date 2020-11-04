@@ -15,20 +15,35 @@ host = 'localhost';
 port = 8888;
 
 rcvpkt = []
+ACK = 'ACK'
+
 def isNAK(rcvpkt):
-    return False
+    if ACK == 'NAK':
+        return True
+    else:
+        return False
     #here we will see if the received packet as a negative acknowledgment
     #NAK is received when checksum fails
     
 def rdt_rcv(rcvpkt):
     #here we will receive information back from the server regarding the status of the information delievered
     rcvpkt = make_pkt(s.recvfrom(1024)) #update rcvpkt
+    
     d = rcvpkt[0]
+    
+    
+    if 'NAK for ' in d:
+        ACK = 'NAK'
+    elif 'ACK for ' in d:
+        ACK = 'ACK'
+    
     
     reply = d[0]
     addr = d[1]
     
-    print 'Server reply : ' + reply
+    if 'OK...' in reply:
+        print 'Server reply : ' + reply
+    
     return True
     
 
@@ -41,8 +56,10 @@ def make_pkt(data):
 def udt_send(sndpkt):
     try :
         str = ''.join(sndpkt)
+        #print 'This is str: ' + str
+        checksum = ip_checksum(str)
         #Set the whole string
-        s.sendto(str, (host, port))
+        s.sendto(str + ';' + checksum, (host, port))
         
     
     except socket.error, msg:
@@ -56,6 +73,7 @@ def rdt_send(data):
     #send packet
     udt_send(sndpkt)
     
+    rdt_rcv(rcvpkt)
     if rdt_rcv(rcvpkt) and isNAK(rcvpkt):
         #send again
         udt_send(sndpkt)
