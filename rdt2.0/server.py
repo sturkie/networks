@@ -43,10 +43,11 @@ def corrupt(rcvpkt):
     #print 'Checksum = ' + checksum + ', Checksum2 = ' + checksum2
     if str(checksum) == str(checksum2):
         ACK = 'ACK'
+        return False
     elif str(checksum) != str(checksum2):
         ACK = 'NAK'
+        return True
         
-    udt_send(ACK)
 
 
 def deliver_data(data):
@@ -78,12 +79,15 @@ def rdt_rcv(packet):
         msg = myList[0]
         checksum = myList[1]
     
-    corrupt(packet)
+    if corrupt(packet):
+        udt_send('NAK')
+    else:
+        udt_send('ACK')
+        #extract(packet, data)
+        deliver_data(data)
+        packet.pop()
 
 
-    #extract(packet, data)
-    deliver_data(data)
-    packet.pop()
 
 #now keep talking with the client
 while 1:

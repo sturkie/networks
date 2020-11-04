@@ -76,6 +76,7 @@ def rdt_send(data):
     rdt_rcv(rcvpkt)
     if rdt_rcv(rcvpkt) and isNAK(rcvpkt):
         #send again
+        print 'NAK received. Resending...'
         udt_send(sndpkt)
     #else do nothing except wait
 
