@@ -16,8 +16,9 @@ port = 8888;
 
 rcvpkt = []
 def isNAK(rcvpkt):
-    return True
+    return False
     #here we will see if the received packet as a negative acknowledgment
+    #NAK is received when checksum fails
     
 def rdt_rcv(rcvpkt):
     #here we will receive information back from the server regarding the status of the information delievered
@@ -58,7 +59,7 @@ def rdt_send(data):
     if rdt_rcv(rcvpkt) and isNAK(rcvpkt):
         #send again
         udt_send(sndpkt)
-    
+    #else do nothing except wait
 
 while(1) :
     msg = raw_input('Enter message to send : ')
