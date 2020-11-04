@@ -2,6 +2,7 @@
 
 import socket    #for sockets
 import sys    #for exit
+from check import ip_checksum
 
 # create dgram udp socket
 try:
@@ -12,6 +13,19 @@ except socket.error:
 
 host = 'localhost';
 port = 8888;
+
+rcvpkt = []
+#def isNAK(rcvpkt):
+    #here we will see if the received packet as a negative acknowledgment
+    
+def rdt_rcv(rcvpkt):
+    #here we will receive information back from the server regarding the status of the information delievered
+    d = s.recvfrom(1024)
+    reply = d[0]
+    addr = d[1]
+    
+    print 'Server reply : ' + reply
+    
 
 def make_pkt(data):
     #let packet be an array containing: data
@@ -25,24 +39,22 @@ def udt_send(sndpkt):
         #Set the whole string
         s.sendto(str, (host, port))
         
-        # receive data from client (data, addr)
-        d = s.recvfrom(1024)
-        reply = d[0]
-        addr = d[1]
-        
-        print 'Server reply : ' + reply
     
     except socket.error, msg:
         print 'Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
         sys.exit()
     
-
+#wait for call from above
 def rdt_send(data):
     #make packet
     sndpkt = make_pkt(data)
     #send packet
     udt_send(sndpkt)
+    
+   
+    
 
 while(1) :
     msg = raw_input('Enter message to send : ')
     rdt_send(msg)
+    rdt_rcv(rcvpkt)

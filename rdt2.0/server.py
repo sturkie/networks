@@ -2,6 +2,7 @@
 
 import socket
 import sys
+from check import ip_checksum
 
 HOST = ''    # Symbolic name meaning all available interfaces
 PORT = 8888    # Arbitrary non-privileged port
@@ -36,7 +37,7 @@ def deliever_data(data):
     print 'Message[' + addr[0] + ':' + str(addr[1]) + '] - ' + data.strip()
 
     
-
+#wait for call from below
 def rdt_rcv(packet):
     #d = s.recvfrom(1024)
     packet.append(s.recvfrom(1024))
