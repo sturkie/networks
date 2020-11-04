@@ -15,16 +15,20 @@ host = 'localhost';
 port = 8888;
 
 rcvpkt = []
-#def isNAK(rcvpkt):
+def isNAK(rcvpkt):
+    return True
     #here we will see if the received packet as a negative acknowledgment
     
 def rdt_rcv(rcvpkt):
     #here we will receive information back from the server regarding the status of the information delievered
-    d = s.recvfrom(1024)
+    rcvpkt = make_pkt(s.recvfrom(1024)) #update rcvpkt
+    d = rcvpkt[0]
+    
     reply = d[0]
     addr = d[1]
     
     print 'Server reply : ' + reply
+    return True
     
 
 def make_pkt(data):
@@ -51,10 +55,12 @@ def rdt_send(data):
     #send packet
     udt_send(sndpkt)
     
-   
+    if rdt_rcv(rcvpkt) and isNAK(rcvpkt):
+        #send again
+        udt_send(sndpkt)
     
 
 while(1) :
     msg = raw_input('Enter message to send : ')
     rdt_send(msg)
-    rdt_rcv(rcvpkt)
+    #rdt_rcv(rcvpkt)
