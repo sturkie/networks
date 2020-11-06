@@ -23,12 +23,15 @@ ACK = 'ACK'
 def isACK(rcvpkt,seqnum):
     if ACK == 'ACK' and seqnum == 0:
         seq = 1
+        print 'Received ACK for seq0'
         return True
     elif ACK == 'ACK' and seqnum == 1:
+        print 'Received ACK for seq1'
         return True
 
 def isNAK(rcvpkt):
     if ACK == 'NAK':
+        print 'Received NAK'
         return True
     else:
         return False
@@ -37,17 +40,16 @@ def isNAK(rcvpkt):
     
 def rdt_rcv(rcvpkt):
     #here we will receive information back from the server regarding the status of the information delievered
-    print 'About to receive input'
-    d = s.recvfrom(1024) #update rcvpkt
-    print 'Input is: ' + d[0]
     
-    if 'NAK' in d:
-        print 'Got NAK'
+    if 'NAK' in rcvpkt[0]:
+        #print 'Received NAK'
         ACK = 'NAK'
         return True
-    elif 'ACK' in d:
+    elif 'ACK' in rcvpkt[0]:
+        #print 'Rceived ACK'
         ACK = 'ACK'
     
+    d = rcvpkt[0]
     
     reply = d[0]
     addr = d[1]
@@ -78,7 +80,7 @@ def udt_send(sndpkt):
         #print 'This is str: ' + str
         #checksum = ip_checksum(str)
         #Set the whole string
-        print 'Sending: ' + str(seq) + '|' + msg + ';' + sndpkt[2]
+        #print 'Sending: ' + str(seq) + '|' + msg + ';' + sndpkt[2]
         s.sendto(str(seq) + '|' + msg + ';' + sndpkt[2], (host, port))
         
         #s.sendto(sndpkt,(host,port))
@@ -98,21 +100,38 @@ def rdt_send(data):
     #send packet
     udt_send(sndpkt)
     
+    #print 'About to receive input'
+    d = s.recvfrom(1024) #update rcvpkt
+    #print 'Input is: ' + d[0]
+    
+    rcvpkt.append(d)
+    
     rdt_rcv(rcvpkt)
+    rcvpkt.pop()
+    #rdt_rcv(rcvpkt)
     if isNAK(rcvpkt):
         #send again
-        print 'NAK received. Resending...'
+        #print 'NAK received. Resending...'
         udt_send(sndpkt)
         del sndpkt[:]
     elif isACK(rcvpkt,0):
         #send again but with seq1
-        print 'ACK received. Sending sequence 1'
+        #print 'ACK received. Sending sequence 1'
         sndpkt = make_pkt(1, data, checksum)
         udt_send(sndpkt)
         del sndpkt[:]
+        #will receive second ACK
+        rcvpkt.append(s.recvfrom(1024))
+        rdt_rcv(rcvpkt)
+        rcvpkt.pop()
+        if isACK(rcvpkt, 1):
+            rcvpkt.append(s.recvfrom(1024))
+            #print 'Receiving: ' + str(rcvpkt[0])
+            rdt_rcv(rcvpkt)
+            rcvpkt.pop()
     #else do nothing except wait
 
 while(1) :
     msg = raw_input('Enter message to send : ')
     rdt_send(msg)
-    #rdt_rcv(rcvpkt)
+    
