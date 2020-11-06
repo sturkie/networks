@@ -60,7 +60,7 @@ def corrupt(rcvpkt):
     #print 'Checksum = ' + str(checksum) + ', Checksum2 = ' + checksum2
     if str(checksum) != str(checksum2):
         ACK = 'NAK'
-        #print 'They are NOT the same'
+        print 'They are NOT the same'
         return True
 
 
