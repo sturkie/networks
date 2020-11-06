@@ -134,4 +134,3 @@ def rdt_send(data):
 while(1) :
     msg = raw_input('Enter message to send : ')
     rdt_send(msg)
-    
