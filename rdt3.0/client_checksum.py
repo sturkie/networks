@@ -1,5 +1,4 @@
 #Referenced from https://www.binarytides.com/programming-udp-sockets-in-python/
-
 from socket import timeout
 import socket    #for sockets
 import sys    #for exit
@@ -45,18 +44,19 @@ def isNAK(rcvpkt):
 def rdt_rcv(rcvpkt):
     #here we will receive information back from the server regarding the status of the information delievered
     
-    if 'NAK' in rcvpkt[0]:
-        #print 'Received NAK'
-        ACK = 'NAK'
-        return True
-    elif 'ACK' in rcvpkt[0]:
-        #print 'Rceived ACK'
-        ACK = 'ACK'
-    
     d = rcvpkt[0]
     
     reply = d[0]
     addr = d[1]
+    
+    if 'NAK' in d[0]:
+        #print 'Received NAK'
+        ACK = 'NAK'
+        return True
+    elif 'ACK' in d[0]:
+        #print 'Rceived ACK'
+        ACK = 'ACK'
+    
     
     if 'OK...' in reply:
         print 'Server reply : ' + reply
@@ -84,8 +84,8 @@ def udt_send(sndpkt):
         #print 'This is str: ' + str
         #checksum = ip_checksum(str)
         #Set the whole string
-        #print 'Sending: ' + str(seq) + '|' + msg + ';' + sndpkt[2]
-        s.sendto(str(seq) + '|' + msg + ';' + sndpkt[2], (host, port))
+        print 'Sending: ' + str(seq) + '|' + msg + ';' + 'false'
+        s.sendto(str(seq) + '|' + msg + ';' + 'false', (host, port))
         
         #s.sendto(sndpkt,(host,port))
         
@@ -122,7 +122,7 @@ def rdt_send(data):
     
     if isNAK(rcvpkt):
         #send again
-        #print 'NAK received. Resending...'
+        print 'NAK received. Resending...'
         udt_send(sndpkt)
         del sndpkt[:]
     elif isACK(rcvpkt,0):

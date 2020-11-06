@@ -5,6 +5,7 @@ import socket    #for sockets
 import sys    #for exit
 from check import ip_checksum
 import time
+import random
 
 
 # create dgram udp socket
@@ -81,11 +82,13 @@ def udt_send(sndpkt):
         seq = sndpkt[0]
         msg = ''.join(sndpkt[1])
         
+        #false checksum
+        
         #print 'This is str: ' + str
         #checksum = ip_checksum(str)
         #Set the whole string
         #print 'Sending: ' + str(seq) + '|' + msg + ';' + sndpkt[2]
-        s.sendto(str(seq) + '|' + msg + ';' + sndpkt[2], (host, port))
+        s.sendto(str(seq) + '|' + msg + ';' + str(random.random()), (host, port))
         
         #s.sendto(sndpkt,(host,port))
         
@@ -146,6 +149,9 @@ def rdt_send(data):
                     rcvpkt.pop()
                 except timeout:
                     print 'Timeout'
+                    sndpkt = make_pkt(1, data, checksum)
+                    udt_send(sndpkt)
+                    del sndpkt[:]
                     #resend
         except timeout:
             sndpkt = make_pkt(1, data, checksum)
