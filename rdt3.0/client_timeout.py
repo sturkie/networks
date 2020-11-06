@@ -34,6 +34,7 @@ def isACK(rcvpkt,seqnum):
         print 'Received ACK for seq1'
         return True
 
+
 def isNAK(rcvpkt):
     if ACK == 'NAK':
         print 'Received NAK'
@@ -43,21 +44,25 @@ def isNAK(rcvpkt):
     #here we will see if the received packet as a negative acknowledgment
     #NAK is received when checksum fails
     
+    
+    
 def rdt_rcv(rcvpkt):
     #here we will receive information back from the server regarding the status of the information delievered
     
-    if 'NAK' in rcvpkt[0]:
+    d = rcvpkt[0]
+       
+    reply = d[0]
+    addr = d[1]
+    
+    if 'NAK' in reply:
         #print 'Received NAK'
         ACK = 'NAK'
         return True
-    elif 'ACK' in rcvpkt[0]:
+    elif 'ACK' in reply:
         #print 'Rceived ACK'
         ACK = 'ACK'
     
-    d = rcvpkt[0]
-    
-    reply = d[0]
-    addr = d[1]
+
     
     if 'OK...' in reply:
         print 'Server reply : ' + reply
@@ -112,6 +117,9 @@ def rdt_send(data):
         d = s.recvfrom(1024) #update rcvpkt
         #print 'Input is: ' + d[0]
         
+        if 'NAK' in d:
+            ACK = 'NAK'
+            
         rcvpkt.append(d)
         
         rdt_rcv(rcvpkt)
@@ -154,7 +162,7 @@ def rdt_send(data):
                     del sndpkt[:]
                     #resend
         except timeout:
-            sndpkt = make_pkt(1, data, checksum)
+            sndpkt = make_pkt(0, data, checksum)
             udt_send(sndpkt)
             del sndpkt[:]
             print 'Timeout'

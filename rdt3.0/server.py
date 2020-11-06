@@ -92,6 +92,7 @@ def rdt_rcv(packet):
     if corrupt(rcvpkt) or has_seq0(rcvpkt):
         #print 'the message is on seq 0, sending NAK'
         udt_send('NAK') #send again
+        del rcvpkt[:]
     elif notCorrupt(rcvpkt) and has_seq1(rcvpkt):
         #print 'the message is clear ro reply to'
         udt_send('ACK')
