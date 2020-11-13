@@ -7,8 +7,10 @@ import time
 import packet
 
 from packet import make
+from packet import extract
 
 from timer import Timer
+
 
 ##TODO: Initialize the following variables
 RECEIVER_ADDR = ('localhost',8080)
@@ -53,13 +55,11 @@ def send(sock):
         # Send all the packets in the window
         while packets and (seq_num < base + window_size):
             # TODO: Send the packet and increase next_to_send counter
-            print('Sending packet:', next_to_send)
+            print('Sending packet:', next_to_send, seq_num)
             send_packet = make(seq_num, next_to_send)
             next_to_send = packets.pop(0)
             
             sock.sendto(send_packet, (SENDER_ADDR))
-            
-            seq_num += 1
     
         # Start the timer
         if not send_timer.running():
@@ -71,30 +71,37 @@ def send(sock):
             mutex.release()
             print('Sleeping')
             time.sleep(SLEEP_INTERVAL)
+            #receive(sock)
             mutex.acquire()
+            d = sock.recvfrom(1024)
+            check_ack, msg = extract(d[0])
+            print('Receiving something', d[0])
+            if isACK(check_ack, base):
+                receive(sock)
 
         if send_timer.timeout():
             # Looks like we timed out
             print('Timeout')
             send_timer.stop();
             ## TODO: Set appropriate value of next_to_send
-            next_to_send = packets.pop(0)
+            next_to_send = packets.pop(0) #change to a prev_next variable
         else:
             print('Shifting window')
             ## TODO:  Set the correct window_size
             window_size = 4
             #base += 1
         mutex.release()
+        seq_num += 1
 
     # TODO: Send empty packet as an indicator to close the connection
-    empty_packet = make(0,'')
-    sock.sendto(empty_packet, (RECEIVER_ADDR,SENDER_ADDR))
+    sock.sendto('', (RECEIVER_ADDR,SENDER_ADDR))
+    
+    #receive(sock)
     
     
 #isAck function
-def isACK(data, base):
-    data_ack = int(data[0])
-    if(data_ack != base):
+def isACK(in_seq_num, base):
+    if(in_seq_num != base):
         return False
         
     return True
@@ -110,17 +117,26 @@ def receive(sock):
         # TODO: Reveive packet and extract data and ack
         d = sock.recvfrom(1024)
         data = d[0]
+        print('Received data... Processing data')
         
-        if not isACK(data, base):
-            return False
+        
+        #idea: extract the ACK value from the received msg
+        in_seq_num, msg = extract(data)
+        
+        #if not isACK(in_seq_num, base):
+            #print('No ACK')
+            #return False
+        
+        ack = in_seq_num
         
         # If we get an ACK for the first in-flight packet
         print('Got ACK', ack)
+        print('Got reply: ' + msg)
         ack = int(ack)
         if (ack >= base):
             mutex.acquire()
             ## TODO: Set the correct value of base
-            base += 1 #check this this is just a bs value
+            base += 1
             print('Base updated', base)
             send_timer.stop()
             mutex.release()
@@ -133,5 +149,5 @@ if __name__ == '__main__':
     sock.bind(SENDER_ADDR)
 
     send(sock)
-    receive(sock)
+    #receive(sock)
     sock.close()
