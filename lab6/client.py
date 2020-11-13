@@ -37,7 +37,7 @@ def send(sock):
     global send_timer
 
     ## TODO: Add all the packets and corresponding seq_num to packets
-    packets = ['Message 1','Message 2''Message 3''Message 4''Message 5''Message 6''Message 7''Message 8''Message 9''Message 10''Message 11''Message 12']
+    packets = ['Message 1','Message 2','Message 3','Message 4','Message 5','Message 6','Message 7','Message 8','Message 9','Message 10','Message 11','Message 12']
     num_packets = len(packets)
     seq_num = 0
     
