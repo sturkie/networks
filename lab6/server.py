@@ -34,7 +34,7 @@ def receive(sock):
             print('Sending ACK', expected_num - 1)
             send_pkt = make(expected_num - 1, reply)
             sock.sendto(send_pkt, RECEIVER_ADDR)
-            del data
+            del pkt
 
 # Main function
 if __name__ == '__main__':

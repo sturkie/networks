@@ -43,8 +43,8 @@ def send(sock):
     
 
     ##TODO: Initialize window_size, next_to_send and base values
-    window_size = WINDOW_SIZE
-    next_to_send = packets.pop(0)
+    window_size = set_window_size(num_packets)
+    next_to_send = 0
     base = 0
 
     # Start the receiver thread
@@ -53,14 +53,14 @@ def send(sock):
     while base < num_packets:
         mutex.acquire()
         # Send all the packets in the window
-        while packets and (seq_num < base + window_size):
+        while (next_to_send < base + window_size):
             # TODO: Send the packet and increase next_to_send counter
-            print('Sending packet:', next_to_send, seq_num)
-            send_packet = make(seq_num, next_to_send)
-            next_to_send = packets.pop(0)
+            print('Sending packet:', packets[next_to_send], seq_num)
+            send_packet = make(seq_num, packets[next_to_send])
             
             sock.sendto(send_packet, (SENDER_ADDR))
-    
+            seq_num += 1
+            next_to_send += 1
         # Start the timer
         if not send_timer.running():
             print('Starting timer')
@@ -71,13 +71,7 @@ def send(sock):
             mutex.release()
             print('Sleeping')
             time.sleep(SLEEP_INTERVAL)
-            #receive(sock)
             mutex.acquire()
-            d = sock.recvfrom(1024)
-            check_ack, msg = extract(d[0])
-            print('Receiving something', d[0])
-            if isACK(check_ack, base):
-                receive(sock)
 
         if send_timer.timeout():
             # Looks like we timed out
@@ -88,10 +82,10 @@ def send(sock):
         else:
             print('Shifting window')
             ## TODO:  Set the correct window_size
-            window_size = 4
+            window_size = set_window_size(num_packets)
             #base += 1
         mutex.release()
-        seq_num += 1
+        #seq_num += 1
 
     # TODO: Send empty packet as an indicator to close the connection
     sock.sendto('', (RECEIVER_ADDR,SENDER_ADDR))
