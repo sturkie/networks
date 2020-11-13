@@ -78,9 +78,10 @@ def send(sock):
             print('Timeout')
             send_timer.stop();
             ## TODO: Set appropriate value of next_to_send
-            next_to_send = packets.pop(0) #change to a prev_next variable
+            next_to_send -= 4 #change to a prev_next variable
+            seq_num -= 4
         else:
-            print('Shifting window')
+            print('Shifting window\n')
             ## TODO:  Set the correct window_size
             window_size = set_window_size(num_packets)
             #base += 1
@@ -88,7 +89,7 @@ def send(sock):
         #seq_num += 1
 
     # TODO: Send empty packet as an indicator to close the connection
-    sock.sendto('', (RECEIVER_ADDR,SENDER_ADDR))
+    sock.sendto('', (SENDER_ADDR))
     
     #receive(sock)
     
@@ -111,7 +112,7 @@ def receive(sock):
         # TODO: Reveive packet and extract data and ack
         d = sock.recvfrom(1024)
         data = d[0]
-        print('Received data... Processing data')
+        print('Received data... Processing data\n')
         
         
         #idea: extract the ACK value from the received msg
@@ -140,7 +141,7 @@ if __name__ == '__main__':
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-    sock.bind(SENDER_ADDR)
+    #sock.bind(SENDER_ADDR)
 
     send(sock)
     #receive(sock)
