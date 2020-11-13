@@ -27,14 +27,16 @@ def receive(sock):
         # TODO: Make and send back an ACK for both conditions accordingly
         if seq_num == expected_num:
             print('Data received:', data)
+            
             send_pkt = make(expected_num, reply)
             sock.sendto(send_pkt, addr)
             expected_num += 1
         else:
+        
             print('Sending ACK', expected_num - 1)
             send_pkt = make(expected_num - 1, reply)
             sock.sendto(send_pkt, addr)
-            del pkt
+            #del pkt
 
 # Main function
 if __name__ == '__main__':

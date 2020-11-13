@@ -56,6 +56,7 @@ def send(sock):
         while (next_to_send < base + window_size):
             # TODO: Send the packet and increase next_to_send counter
             print('Sending packet:', packets[next_to_send], seq_num)
+            print '\n'
             send_packet = make(seq_num, packets[next_to_send])
             
             sock.sendto(send_packet, (SENDER_ADDR))
