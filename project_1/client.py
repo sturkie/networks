@@ -63,6 +63,11 @@ print 'Socket Connected to ' + host + ' on ip ' + remote_ip
 TODO: Part-1.1, 1.2:
 Enter Username and Passwd
 '''
+
+
+
+username = raw_input('Enter username: ')
+
 # Whenever a user connects to the server, they should be asked for their username and password.
 # Username should be entered as clear text but passwords should not (should be either obscured or hidden).
 # get username from input. HINT: raw_input(); get passwd from input. HINT: getpass()
