@@ -63,11 +63,13 @@ def clientThread(conn):
     conn.send('Welcome to the server. Type something and hit enter\n') #send only takes string
     rcv_msg = conn.recv(1024)
     rcv_msg = stringToTuple(rcv_msg)
+    
     print "this is a tuple %s" % (rcv_msg,)
     if rcv_msg in userpass:
         user = userpass.index(rcv_msg)
         
         try :
+            print 'Sending valid...'
             conn.sendall('valid')
         except socket.error:
             print 'Send failed'

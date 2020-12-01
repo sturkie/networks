@@ -60,6 +60,16 @@ s.connect((remote_ip , port))
 print 'Socket Connected to ' + host + ' on ip ' + remote_ip
 
 '''
+Receive Welcome
+'''
+
+print '\n'
+welcome_msg = s.recv(1024)
+print welcome_msg
+print '--------------------------------'
+
+
+'''
 TODO: Part-1.1, 1.2:
 Enter Username and Passwd
 '''
@@ -80,8 +90,8 @@ s.sendto(username + '<>' + passwd, (host,port))
 TODO: Part-1.3: User should log in successfully if username and password are entered correctly. A set of username/password pairs are hardcoded on the server side.
 '''
 reply = s.recv(5)
+print 'this is reply:' + reply
 if reply == 'valid': # TODO: use the correct string to replace xxx here!
-
     # Start the receiving thread
     start_new_thread(receiveThread ,(s,))
 
@@ -93,6 +103,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
         
         try :
             # TODO: Send the selected option to the server
+            s.sendto(message, (host,port))
             # HINT: use sendto()/sendall()
             if message == str(1):
                 print 'Logout'
@@ -104,6 +115,6 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
             print 'Send failed'
             sys.exit()
 else:
-    print 'Invalid username or passwword'
+    print 'Invalid username or password'
 
 s.close()
