@@ -91,7 +91,7 @@ def clientThread(conn):
 
                 #receiving new login credentials
                 rcv_msg = conn.recv(1024)
-                addr = rcv_msg[1]
+                
                 rcv_msg = stringToTuple(rcv_msg)
                 print 'Received new password'
 
