@@ -101,9 +101,10 @@ def clientThread(conn):
                 userpass[user] = rcv_msg
 
                 print "This is userpass[user] %s" % (userpass[0],)
-
+                
+                #doesn't work, try to ask
                 #send a sucess msg back to client
-                conn.sendall('done')
+                #conn.sendall('done')
             else:
                 try :
                     conn.sendall('Option not valid')

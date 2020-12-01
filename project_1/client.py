@@ -110,7 +110,6 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 # TODO: add logout operation
                 break
             if message == str(2):
-                while True:
                 #print 'Post a message'
                     # Add other operations, e.g. change password
                     curr_passwd = getpass.getpass(prompt='Enter current password: ')
@@ -120,15 +119,15 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                         s.sendto(username + '<>' + new_passwd, (host,port))
                         print 'Sent'
 
-                        print 'Waiting for response..'
+                        #print 'Waiting for response..'
                         #receive a response from server
-                        done = s.recv(7)
-                        if not done:
-                            break
-                        print 'this is reply: ' + done
-                        if done == 'done':
-                            print 'Password changed successfully'
-                            break
+                        #done = s.recv(7)
+                        #print 'this is reply: ' + done
+                        #if done == 'done':
+                        print 'Password changed successfully'
+                        passwd = new_passwd
+                    else:
+                        print 'Incorrect password. Please try again'
                         
         except socket.error:
             print 'Send failed'
