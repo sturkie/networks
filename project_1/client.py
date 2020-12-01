@@ -64,9 +64,9 @@ TODO: Part-1.1, 1.2:
 Enter Username and Passwd
 '''
 
-
-
 username = raw_input('Enter username: ')
+
+passwd = getpass.getpass()
 
 # Whenever a user connects to the server, they should be asked for their username and password.
 # Username should be entered as clear text but passwords should not (should be either obscured or hidden).
@@ -74,11 +74,13 @@ username = raw_input('Enter username: ')
 
 # Send username && passwd to server
 
+s.sendto(username + '<>' + passwd, (host,port))
+
 '''
 TODO: Part-1.3: User should log in successfully if username and password are entered correctly. A set of username/password pairs are hardcoded on the server side.
 '''
 reply = s.recv(5)
-if reply == 'xxx': # TODO: use the correct string to replace xxx here!
+if reply == 'valid': # TODO: use the correct string to replace xxx here!
 
     # Start the receiving thread
     start_new_thread(receiveThread ,(s,))

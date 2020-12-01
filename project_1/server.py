@@ -49,6 +49,7 @@ message queue for each user
 clients = []
 # TODO: Part-1 : create a var to store username && password. NOTE: A set of username/password pairs are hardcoded here.
 # e.g. userpass = [......]
+userpass = [["cool_user","password"],["user2000","1234"]]
 messages = [[],[],[]]
 count = 0
 
@@ -62,6 +63,7 @@ def clientThread(conn):
     conn.send('Welcome to the server. Type something and hit enter\n') #send only takes string
     rcv_msg = conn.recv(1024)
     rcv_msg = stringToTuple(rcv_msg)
+    print "this is a tuple %s" % (rcv_msg,)
     if rcv_msg in userpass:
         user = userpass.index(rcv_msg)
         
