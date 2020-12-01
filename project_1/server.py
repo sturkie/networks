@@ -87,7 +87,23 @@ def clientThread(conn):
                 break
 
             elif option == str(2):
-                print 'Post a message'
+                print 'Change password'
+
+                #receiving new login credentials
+                rcv_msg = conn.recv(1024)
+                addr = rcv_msg[1]
+                rcv_msg = stringToTuple(rcv_msg)
+                print 'Received new password'
+
+                #print "This is the new login %s" % (rcv_msg,)
+
+                #update userpass
+                userpass[user] = rcv_msg
+
+                print "This is userpass[user] %s" % (userpass[0],)
+
+                #send a sucess msg back to client
+                conn.sendall('done')
             else:
                 try :
                     conn.sendall('Option not valid')

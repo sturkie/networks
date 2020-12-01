@@ -99,7 +99,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
     while True :
 
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
-        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Post a message \n Choose:")
+        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n Choose:")
         
         try :
             # TODO: Send the selected option to the server
@@ -110,8 +110,26 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 # TODO: add logout operation
                 break
             if message == str(2):
-                print 'Post a message'
-            # Add other operations, e.g. change password
+                while True:
+                #print 'Post a message'
+                    # Add other operations, e.g. change password
+                    curr_passwd = getpass.getpass(prompt='Enter current password: ')
+                    if curr_passwd == passwd:
+                        new_passwd = getpass.getpass(prompt='Enter new password: ')
+                        #Sending new login credentials for curr user
+                        s.sendto(username + '<>' + new_passwd, (host,port))
+                        print 'Sent'
+
+                        print 'Waiting for response..'
+                        #receive a response from server
+                        done = s.recv(7)
+                        if not done:
+                            break
+                        print 'this is reply: ' + done
+                        if done == 'done':
+                            print 'Password changed successfully'
+                            break
+                        
         except socket.error:
             print 'Send failed'
             sys.exit()
