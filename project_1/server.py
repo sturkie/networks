@@ -82,8 +82,10 @@ def clientThread(conn):
             except:
                 break
             if option == str(1):
-                print 'user logout'
+                print 'user  is logging out...'
                 # TODO: Part-1: Add the logout processing here
+                break
+
             elif option == str(2):
                 print 'Post a message'
             else:

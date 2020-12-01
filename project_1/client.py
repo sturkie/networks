@@ -90,7 +90,7 @@ s.sendto(username + '<>' + passwd, (host,port))
 TODO: Part-1.3: User should log in successfully if username and password are entered correctly. A set of username/password pairs are hardcoded on the server side.
 '''
 reply = s.recv(5)
-print 'this is reply:' + reply
+#print 'this is reply:' + reply
 if reply == 'valid': # TODO: use the correct string to replace xxx here!
     # Start the receiving thread
     start_new_thread(receiveThread ,(s,))
@@ -99,7 +99,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
     while True :
 
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
-        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Post a message \n")
+        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Post a message \n Choose:")
         
         try :
             # TODO: Send the selected option to the server
@@ -108,6 +108,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
             if message == str(1):
                 print 'Logout'
                 # TODO: add logout operation
+                break
             if message == str(2):
                 print 'Post a message'
             # Add other operations, e.g. change password
