@@ -78,6 +78,9 @@ def clientThread(conn):
         After the user logs in, check the unread message for this user.
         Return the number of unread messages to this user.
         '''
+        for key, value in messages:
+            if key == str(user_id):
+                print value
         
         
         try :
