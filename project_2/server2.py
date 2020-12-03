@@ -50,6 +50,10 @@ clients = []
 # TODO: Part-1 : create a var to store username && password. NOTE: A set of username/password pairs are hardcoded here.
 # e.g. userpass = [......]
 userpass = [["cool_user","password"],["user2000","1234"],["student","cs164"]]
+id = [1, 2, 3]
+#cool_user id = 1
+#user2000 id = 2
+#student id = 3
 messages = [[],[],[]]
 count = 0
 
@@ -67,12 +71,14 @@ def clientThread(conn):
     print "this is a tuple %s" % (rcv_msg,)
     if rcv_msg in userpass:
         user = userpass.index(rcv_msg)
+        user_id = id(rcv_msg)
         
         '''
         Part-2:TODO:
         After the user logs in, check the unread message for this user.
         Return the number of unread messages to this user.
         '''
+        
         
         try :
             print 'Sending valid...'
@@ -116,6 +122,17 @@ def clientThread(conn):
                     '''
                     Part-2:TODO: Send private message
                     '''
+                    pmsg = conn.recv(1024)
+                    print 'Got pmsg'
+                    
+                    rcv_id = conn.recv(1024)
+                    print 'Got rcv_id'
+                    
+                    #add psgm to message buffer
+                    message.append([rcv_id, pmsg])
+                    #now do the magic
+                    
+                    
                 if message == str(2):
                     '''
                     Part-2:TODO: Send broadcast message
