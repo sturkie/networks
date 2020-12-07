@@ -125,31 +125,31 @@ def clientThread(conn):
                         option  = conn.recv(1024)
                     except:
                         break
-                if message == str(1):
-                    '''
-                    Part-2:TODO: Send private message
-                    '''
-                    pmsg = conn.recv(1024)
-                    print 'Got pmsg'
-                    
-                    rcv_id = conn.recv(1024)
-                    print 'Got rcv_id'
-                    
-                    #add psgm to message buffer
-                    messages[int(rcv_id)-1].append(pmsg)
+                    if message == str(1):
+                        '''
+                        Part-2:TODO: Send private message
+                        '''
+                        pmsg = conn.recv(1024)
+                        print 'Got pmsg'
+                        
+                        rcv_id = conn.recv(1024)
+                        print 'Got rcv_id'
+                        
+                        #add psgm to message buffer
+                        messages[int(rcv_id)-1].append(pmsg)
 
-                    #now do the magic
-                    #send this message to the correct user's message queue
-                    
-                    
-                elif message == str(2):
-                    '''
-                    Part-2:TODO: Send broadcast message
-                    '''
-                elif message == str(3):
-                    '''
-                    Part-2:TODO: Send group message
-                    '''
+                        #now do the magic
+                        #send this message to the correct user's message queue
+                        
+                        
+                    elif message == str(2):
+                        '''
+                        Part-2:TODO: Send broadcast message
+                        '''
+                    elif message == str(3):
+                        '''
+                        Part-2:TODO: Send group message
+                        '''
             elif option == str(4):
                 '''
                 Part-2:TODO: Join/Quit group
