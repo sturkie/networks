@@ -97,14 +97,9 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
 
     message = ""
     while True :
-    
-       '''
-       TODO: Display unread messages to newly logged in user
-       '''
-
+        
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
         message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4.Group configuration \n 5. Offline message \n Choose:")
-        
         try :
             # TODO: Send the selected option to the server
             s.sendto(message, (host,port))
