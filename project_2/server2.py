@@ -2,6 +2,7 @@ import socket
 import sys
 from thread import *
 import time
+import select
 
 '''
 Function Definition
@@ -117,7 +118,7 @@ def clientThread(conn):
                 
                 #doesn't work, try to ask
                 #send a sucess msg back to client
-                #conn.sendall('done')
+                conn.sendall('done')
             elif option == str(3):
                 message = conn.recv(1024)
                 if message == str(1):

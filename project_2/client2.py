@@ -3,6 +3,7 @@ import sys
 from thread import *
 import getpass
 import os
+import select
 
 '''
 Function Definition
@@ -58,6 +59,12 @@ Connect to remote server
 '''
 s.connect((remote_ip , port))
 print 'Socket Connected to ' + host + ' on ip ' + remote_ip
+
+inputs = [s]
+outputs = []
+timeout = 10
+
+readable, writable, exceptional = select.select( inputs, outputs, inputs, timeout)
 
 '''
 Receive Welcome
@@ -126,10 +133,13 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                     #print 'Waiting for response..'
                     #receive a response from server
                     #done = s.recv(7)
+
+                    for tempSocket in readable:
+                        done = tempSocket.recv(1024)
                     #print 'this is reply: ' + done
-                    #if done == 'done':
-                    print 'Password changed successfully'
-                    passwd = new_passwd
+                    if done == 'done':
+                        print 'Password changed successfully'
+                        passwd = new_passwd
                 else:
                     print 'Incorrect password. Please try again'
             if message == str(3):
