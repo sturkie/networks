@@ -92,9 +92,14 @@ TODO: Part-1.3: User should log in successfully if username and password are ent
 reply = s.recv(5)
 #print 'this is reply:' + reply
 if reply == 'valid': # TODO: use the correct string to replace xxx here!
+    # Receive number of new messages
+    msg_intro =  s.recv(1024)
+    print str(msg_intro)
+
     # Start the receiving thread
     start_new_thread(receiveThread ,(s,))
 
+    
     message = ""
     while True :
         

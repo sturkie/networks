@@ -74,16 +74,6 @@ def clientThread(conn):
         
         print 'This is user value: ' + str(user)
 
-        '''
-        Part-2:TODO:
-        After the user logs in, check the unread message for this user.
-        Return the number of unread messages to this user.
-        '''
-        if messages 
-        for key, value in messages:
-            if key == str(user_id):
-                print value
-        
         
         try :
             print 'Sending valid...'
@@ -92,6 +82,13 @@ def clientThread(conn):
             print 'Send failed'
             sys.exit()
             
+        '''
+        Part-2:TODO:
+        After the user logs in, check the unread message for this user.
+        Return the number of unread messages to this user.
+        '''
+        conn.sendall('You have ' + str(len(messages[user])) + ' new messages')
+
         # Tips: Infinite loop so that function do not terminate and thread do not end.
         while True:
             try :
