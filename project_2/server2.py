@@ -160,6 +160,18 @@ def clientThread(conn):
                         '''
                         Part-2:TODO: Send group message
                         '''
+                        gmsg = conn.recv(1024)
+
+                        print 'Got gmsg: ' + str(gmsg)
+
+                        g_id = conn.recv(1024)
+                        print 'Got g_id: ' + str(g_id)
+                        
+                        gmsg = 'Group #' + str(g_id) +': Message from: ' + usernames[user] + ': ' + gmsg
+                        
+                        #send to all members of that group
+                        for id in groups[int(g_id)-1]:
+                            messages[id-1].append(gmsg)
                         
             elif option == str(4):
                 '''
@@ -167,12 +179,12 @@ def clientThread(conn):
                 '''
                 group_num = conn.recv(1024)
                 if usernames[user] in groups[int(group_num)-1]:
-                    groups[int(group_num)-1].remove(usernames[user])
+                    groups[int(group_num)-1].remove(user+1)
                     print '"' + usernames[user] + '" has left the group'
                     conn.sendall('left')
                 else:
                     #group_num = conn.recv(1024)
-                    groups[int(group_num)-1].append(usernames[user])
+                    groups[int(group_num)-1].append(user+1)
                     print '"' +  usernames[user] + '"' + ' has been added to group ' + str(group_num)
                     conn.sendall('join')
             elif option == str(5):

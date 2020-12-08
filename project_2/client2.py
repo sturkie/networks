@@ -137,6 +137,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                     
 
                     #print 'this is reply: ' + done
+                    #receiveThread(s)
                     #if reply == 'done':
                     print 'Password changed successfully'
                     passwd = new_passwd
@@ -188,6 +189,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                             '''
                             Part-2:TODO: Send group message
                             '''
+                            s.sendto(gmsg,(host,port))
                         except socket.error:
                             print 'Group Message Send failed'
                             sys.exit()
@@ -196,7 +198,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                             '''
                             Part-2:TODO: Send group message
                             '''
-                            break
+                            s.sendto(g_id,(host,port))
                         except socket.error:
                             print 'g_id Send failed'
                             sys.exit()
