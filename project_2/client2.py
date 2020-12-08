@@ -8,13 +8,19 @@ import select
 '''
 Function Definition
 '''
+
+message_amount = ""
+reply_msg = ""
 def receiveThread(s):
     while True:
         try:
-            reply = s.recv(4096) # receive msg from server
-            
+            reply_msg = s.recv(4096) # receive msg from server
             # You can add operations below once you receive msg
             # from the server
+
+            if "msg#" in reply_msg:
+                message_amount = reply_msg[4:]
+                #print 'This is msg amount received: ' + message_amount
 
         except:
             print "Connection closed"
@@ -107,9 +113,9 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
 
 
     message = ""
-    while 'Broadcast' != reply :
-        if 'Broadcast' in reply:
-            print reply
+    while True:
+        if 'Broadcast' in reply_msg:
+            print reply_msg
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
         message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4. Group configuration \n 5. View messages \n Choose:")
         try :
@@ -240,12 +246,12 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 else:
                     print 'Option not valid'
             if message == str(5):
+                #global message_amount
                 #offline message
-                #while not os.getpgrp() == os.tcgetpgrp(sys.stdout.fileno()):
-                #    pass
-                s.sendto('ready',(host,port))
-                
-                print 'You have ' + reply + ' unread messages'
+                while not os.getpgrp() == os.tcgetpgrp(sys.stdout.fileno()):
+                    pass
+                if reply_msg != 'valid':
+                    print 'You have ' + message_amount  + ' unread messages'
         except socket.error:
             print 'Send failed'
             sys.exit()

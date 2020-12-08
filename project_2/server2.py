@@ -191,11 +191,8 @@ def clientThread(conn):
                 '''
                 Part-2:TODO: Read offline message
                 '''
-                ready = conn.recv(5)
-                if ready == 'ready':
-                    #send number of msgs to expect
-                    print 'Sending ' + str(len(messages[user])) + ' messages'
-                    conn.sendall(str(len(messages[user])))
+                print 'Sending ' + str(len(messages[user])) + ' messages'
+                conn.sendall('msg#' + str(len(messages[user])))
 
                     #Send messages from the list
                     #for item in messages:
