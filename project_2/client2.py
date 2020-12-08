@@ -108,7 +108,8 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
 
     message = ""
     while True :
-        
+        if 'Broadcast' in reply:
+            print reply
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
         message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4. Group configuration \n 5. View messages \n Choose:")
         try :
@@ -176,7 +177,8 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                             '''
                             Part-2:TODO: Send broadcast message
                             '''
-                            break
+                            print 'Sending broadcast message...'
+                            s.sendto(bmsg,(host,port))
                         except socket.error:
                             print 'Broadcast Message Send failed'
                             sys.exit()

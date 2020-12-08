@@ -149,10 +149,18 @@ def clientThread(conn):
                         '''
                         Part-2:TODO: Send broadcast message
                         '''
+                        bmsg = conn.recv(1024)
+                        print 'Got bmsg: ' + str(bmsg)
+
+                        bmsg = 'Broadcast from "' + usernames[user] + '": ' + bmsg
+                        #send msg to all connected users
+                        broadcast(bmsg)
+                        
                     elif option == str(3):
                         '''
                         Part-2:TODO: Send group message
                         '''
+                        
             elif option == str(4):
                 '''
                 Part-2:TODO: Join/Quit group
@@ -206,6 +214,10 @@ def receiveClients(s):
         clients.append(conn)
         # Tips: start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
         start_new_thread(clientThread ,(conn,))
+
+def broadcast(msg):
+    for client in clients:
+        client.send(msg)
 
 start_new_thread(receiveClients ,(s,))
 
