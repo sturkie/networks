@@ -107,7 +107,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
 
 
     message = ""
-    while True :
+    while 'Broadcast' != reply :
         if 'Broadcast' in reply:
             print reply
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
@@ -137,9 +137,9 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                     
 
                     #print 'this is reply: ' + done
-                    if reply == 'done':
-                        print 'Password changed successfully'
-                        passwd = new_passwd
+                    #if reply == 'done':
+                    print 'Password changed successfully'
+                    passwd = new_passwd
                 else:
                     print 'Incorrect password. Please try again'
             if message == str(3):
@@ -243,7 +243,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 #    pass
                 s.sendto('ready',(host,port))
                 
-                print 'You have ' + reply + 'unread messages'
+                print 'You have ' + reply + ' unread messages'
         except socket.error:
             print 'Send failed'
             sys.exit()
