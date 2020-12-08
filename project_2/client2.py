@@ -60,11 +60,6 @@ Connect to remote server
 s.connect((remote_ip , port))
 print 'Socket Connected to ' + host + ' on ip ' + remote_ip
 
-inputs = [s]
-outputs = []
-timeout = 10
-
-readable, writable, exceptional = select.select( inputs, outputs, inputs, timeout)
 
 '''
 Receive Welcome
@@ -106,7 +101,11 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
     # Start the receiving thread
     start_new_thread(receiveThread ,(s,))
 
-    
+    inputs = [s]
+    outputs = []
+    timeout = 10
+
+
     message = ""
     while True :
         
@@ -133,11 +132,11 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                     #print 'Waiting for response..'
                     #receive a response from server
                     #done = s.recv(7)
+                    
+                    
 
-                    for tempSocket in readable:
-                        done = tempSocket.recv(1024)
                     #print 'this is reply: ' + done
-                    if done == 'done':
+                    if reply == 'done':
                         print 'Password changed successfully'
                         passwd = new_passwd
                 else:

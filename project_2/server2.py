@@ -114,7 +114,7 @@ def clientThread(conn):
                 #update userpass
                 userpass[user] = rcv_msg
 
-                print "This is userpass[user] %s" % (userpass[0],)
+                print "This is userpass[user] %s" % (userpass[user],)
                 
                 #doesn't work, try to ask
                 #send a sucess msg back to client
