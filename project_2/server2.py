@@ -70,10 +70,11 @@ def clientThread(conn):
     rcv_msg = conn.recv(1024)
     rcv_msg = stringToTuple(rcv_msg)
     
-    print "this is a tuple %s" % (rcv_msg,)
+    #print "this is a tuple %s" % (rcv_msg,)
     if rcv_msg in userpass:
         user = userpass.index(rcv_msg)
         
+        print '"' + usernames[user] + '" has logged in'
         print 'This is user value: ' + str(user)
 
         
@@ -138,7 +139,7 @@ def clientThread(conn):
                         
                         #add psgm to message buffer
                         print 'Adding pmsg to messages[]'
-                        messages[int(rcv_id)-1].append('From ' + user + ': ' + pmsg)
+                        messages[int(rcv_id)-1].append('From ' + usernames[user] + ': ' + pmsg)
 
                         #now do the magic
                         #send this message to the correct user's message queue
@@ -157,12 +158,28 @@ def clientThread(conn):
                 Part-2:TODO: Join/Quit group
                 '''
                 group_num = conn.recv(1024)
-                groups[int(group_num)-1].append(usernames[user])
-                print usernames[user] + ' has been added to group ' + str(group_num)
+                if usernames[user] in groups[int(group_num)-1]:
+                    groups[int(group_num)-1].remove(usernames[user])
+                    print '"' + usernames[user] + '" has left the group'
+                    conn.sendall('left')
+                else:
+                    #group_num = conn.recv(1024)
+                    groups[int(group_num)-1].append(usernames[user])
+                    print '"' +  usernames[user] + '"' + ' has been added to group ' + str(group_num)
+                    conn.sendall('join')
             elif option == str(5):
                 '''
                 Part-2:TODO: Read offline message
                 '''
+                ready = conn.recv(5)
+                if ready == 'ready':
+                    #send number of msgs to expect
+                    print 'Sending ' + str(len(messages[user])) + ' messages'
+                    conn.sendall(str(len(messages[user])))
+
+                    #Send messages from the list
+                    #for item in messages:
+                    #    con.sendall(item[0])
             else:
                 try :
                     conn.sendall('Option not valid')
@@ -208,6 +225,7 @@ while 1:
         user = raw_input('User:\n')
         password = raw_input('Password:')
         userpass.append([user, password])
+        usernames.append(user)
         messages.append([])
         subscriptions.append([])
         print 'User created'

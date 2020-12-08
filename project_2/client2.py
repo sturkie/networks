@@ -110,7 +110,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
     while True :
         
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
-        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4. Group configuration \n 5. Offline message \n Choose:")
+        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4. Group configuration \n 5. View messages \n Choose:")
         try :
             # TODO: Send the selected option to the server
             s.sendto(message, (host,port))
@@ -216,15 +216,20 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                         Part-2:TODO: Join a particular group
                         '''
                         s.sendto(group,(host,port))
+                        if reply == 'join':
+                            print 'You have joined group ' + group
                     except socket.error:
                         print 'group info sent failed'
                         sys.exit()
                 elif option == str(2):
-                    group = raw_input("Enter the Group you want to quit: ")
+                    group = raw_input("Enter the Group number you want to quit: ")
                     try :
                         '''
                         Part-2:TODO: Quit a particular group
                         '''
+                        s.sendto(group,(host,port))
+                        if reply == 'left':
+                            print 'You have left group ' + group
                     except socket.error:
                         print 'group info sent failed'
                         sys.exit()
@@ -232,30 +237,11 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                     print 'Option not valid'
             if message == str(5):
                 #offline message
-                while not os.getpgrp() == os.tcgetpgrp(sys.stdout.fileno()):
-                    pass
-                option = raw_input("Do you want to: 1. View all offline messages; 2. View only from a particular Group\n")
-                if option == str(1):
-                    try :
-                        '''
-                        Part-2:TODO: View all offline messages
-                        '''
-                    except socket.error:
-                        print 'msg Send failed'
-                        sys.exit()
-                elif option == str(2):
-                    group = raw_input("Enter the group you want to view the messages from: ")
-                    try :
-                        '''
-                        Part-2:TODO: View only from a particular group
-                        '''
-                    except socket.error:
-                        print 'group Send failed'
-                        sys.exit()
-                else:
-                    print 'Option not valid'
-            
-                        
+                #while not os.getpgrp() == os.tcgetpgrp(sys.stdout.fileno()):
+                #    pass
+                s.sendto('ready',(host,port))
+                
+                print 'You have ' + reply + 'unread messages'
         except socket.error:
             print 'Send failed'
             sys.exit()
