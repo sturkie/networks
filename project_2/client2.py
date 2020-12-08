@@ -142,14 +142,14 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 else:
                     print 'Incorrect password. Please try again'
             if message == str(3):
-                message = raw_input("Choose an option (type the number): \n 1. Private messages \n 2. Broadcast messages \n 3. Group messages \n")
+                message = raw_input("Choose an option (type the number): \n 1. Private messages \n 2. Broadcast messages \n 3. Group messages \n Choose: ")
                 try :
                     '''
                     Part-2:TODO: Send option to server
                     '''
                     s.sendto(message, (host,port)) # Send option to server
                     if message == str(1):
-                        pmsg = raw_input("Enter your private message\n")
+                        pmsg = raw_input("Enter your private message: ")
                         try :
                             '''
                             Part-2:TODO: Send private message
@@ -160,7 +160,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                         except socket.error:
                             print 'Private Message Send failed'
                             sys.exit()
-                        rcv_id = raw_input("Enter the recevier ID:\n")
+                        rcv_id = raw_input("Enter the recevier ID: ")
                         try :
                             '''
                             Part-2:TODO: Send private message

@@ -120,7 +120,11 @@ def clientThread(conn):
                 #send a sucess msg back to client
                 conn.sendall('done')
             elif option == str(3):
-                message = conn.recv(1024)
+                while True:
+                    try:
+                        option  = conn.recv(1024)
+                    except:
+                        break
                 if message == str(1):
                     '''
                     Part-2:TODO: Send private message
@@ -132,15 +136,17 @@ def clientThread(conn):
                     print 'Got rcv_id'
                     
                     #add psgm to message buffer
-                    message.append([rcv_id, pmsg])
+                    messages[int(rcv_id)-1].append(pmsg)
+
                     #now do the magic
+                    #send this message to the correct user's message queue
                     
                     
-                if message == str(2):
+                elif message == str(2):
                     '''
                     Part-2:TODO: Send broadcast message
                     '''
-                if message == str(3):
+                elif message == str(3):
                     '''
                     Part-2:TODO: Send group message
                     '''
