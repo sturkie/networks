@@ -110,7 +110,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
     while True :
         
         # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
-        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4.Group configuration \n 5. Offline message \n Choose:")
+        message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4. Group configuration \n 5. Offline message \n Choose:")
         try :
             # TODO: Send the selected option to the server
             s.sendto(message, (host,port))
@@ -142,7 +142,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 else:
                     print 'Incorrect password. Please try again'
             if message == str(3):
-                message = raw_input("Choose an option (type the number): \n 1. Private messages \n 2. Broadcast messages \n 3. Group messages \n Choose: ")
+                message = raw_input("Choose an option (type the number): \n 1. Private messages \n 2. Broadcast messages \n 3. Group messages \n 4. Go back \n Choose: ")
                 try :
                     '''
                     Part-2:TODO: Send option to server
@@ -167,7 +167,6 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                             '''
                             print 'Sending ID...'
                             s.sendto(rcv_id,(host,port))
-                            break
                         except socket.error:
                             print 'rcv_id Send failed'
                             sys.exit()
@@ -199,6 +198,9 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                         except socket.error:
                             print 'g_id Send failed'
                             sys.exit()
+                    if message == str(4):
+                        #do nothing
+                        print 'Go back'
                 except socket.error:
                     print 'Message Send failed'
                     sys.exit()
@@ -206,11 +208,14 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                 #Group configuration
                 option = raw_input("Do you want to: 1. Join Group 2. Quit Group: \n")
                 if option == str(1):
-                    group = raw_input("Enter the Group you want to join: ")
+                    print 'Group 1'
+                    print 'Group 2'
+                    group = raw_input("Enter the Group number you want to join: ")
                     try :
                         '''
                         Part-2:TODO: Join a particular group
                         '''
+                        s.sendto(group,(host,port))
                     except socket.error:
                         print 'group info sent failed'
                         sys.exit()

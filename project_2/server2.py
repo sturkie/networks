@@ -51,7 +51,8 @@ clients = []
 # TODO: Part-1 : create a var to store username && password. NOTE: A set of username/password pairs are hardcoded here.
 # e.g. userpass = [......]
 userpass = [["cool_user","password"],["user2000","1234"],["student","cs164"]]
-ids = [1, 2, 3]
+groups = [[],[]] #contains the users ids
+usernames = ["cool_user", "user2000", "student"]
 #cool_user id = 1
 #user2000 id = 2
 #student id = 3
@@ -122,31 +123,32 @@ def clientThread(conn):
             elif option == str(3):
                 while True:
                     try:
-                        option  = conn.recv(1024)
+                        option = conn.recv(1024)
                     except:
                         break
-                    if message == str(1):
+                    if option == str(1):
                         '''
                         Part-2:TODO: Send private message
                         '''
                         pmsg = conn.recv(1024)
-                        print 'Got pmsg'
+                        print 'Got pmsg: ' + str(pmsg)
                         
                         rcv_id = conn.recv(1024)
-                        print 'Got rcv_id'
+                        print 'Got rcv_id: ' + str(rcv_id)
                         
                         #add psgm to message buffer
-                        messages[int(rcv_id)-1].append(pmsg)
+                        print 'Adding pmsg to messages[]'
+                        messages[int(rcv_id)-1].append('From ' + user + ': ' + pmsg)
 
                         #now do the magic
                         #send this message to the correct user's message queue
                         
                         
-                    elif message == str(2):
+                    elif option == str(2):
                         '''
                         Part-2:TODO: Send broadcast message
                         '''
-                    elif message == str(3):
+                    elif option == str(3):
                         '''
                         Part-2:TODO: Send group message
                         '''
@@ -154,6 +156,9 @@ def clientThread(conn):
                 '''
                 Part-2:TODO: Join/Quit group
                 '''
+                group_num = conn.recv(1024)
+                groups[int(group_num)-1].append(usernames[user])
+                print usernames[user] + ' has been added to group ' + str(group_num)
             elif option == str(5):
                 '''
                 Part-2:TODO: Read offline message
