@@ -124,10 +124,10 @@ def clientThread(conn):
             elif option == str(3):
                 while True:
                     try:
-                        option = conn.recv(1024)
+                        second_option = conn.recv(1024)
                     except:
                         break
-                    if option == str(1):
+                    if second_option == str(1):
                         '''
                         Part-2:TODO: Send private message
                         '''
@@ -145,7 +145,7 @@ def clientThread(conn):
                         #send this message to the correct user's message queue
                         
                         
-                    elif option == str(2):
+                    elif second_option == str(2):
                         '''
                         Part-2:TODO: Send broadcast message
                         '''
@@ -156,12 +156,13 @@ def clientThread(conn):
                         #send msg to all connected users
                         broadcast(bmsg)
                         
-                    elif option == str(3):
+                    elif second_option == str(3):
                         '''
                         Part-2:TODO: Send group message
                         '''
                         gmsg = conn.recv(1024)
-
+                        if gmsg == str(3):
+                            gmsg = conn.recv(1024)
                         print 'Got gmsg: ' + str(gmsg)
 
                         g_id = conn.recv(1024)
@@ -177,22 +178,32 @@ def clientThread(conn):
                 '''
                 Part-2:TODO: Join/Quit group
                 '''
-                group_num = conn.recv(1024)
-                if usernames[user] in groups[int(group_num)-1]:
+                #group_choice = conn.recv(1024)
+                g_opt = conn.recv(1024)
+
+                if g_opt == str(1): #Join
+                    group_num = conn.recv(1024)
+                    groups[int(group_num)-1].append(user+1)
+                    print '"' + usernames[user] + '"' + ' has been added to group ' + str(group_num)
+                elif g_opt == str(2): #quit
                     groups[int(group_num)-1].remove(user+1)
                     print '"' + usernames[user] + '" has left the group'
-                    conn.sendall('left')
-                else:
-                    #group_num = conn.recv(1024)
-                    groups[int(group_num)-1].append(user+1)
-                    print '"' +  usernames[user] + '"' + ' has been added to group ' + str(group_num)
-                    conn.sendall('join')
+                #group_num = conn.recv(1024)
+                #if usernames[user] in groups[int(group_num)-1]:
+                #    groups[int(group_num)-1].remove(user+1)
+                #    print '"' + usernames[user] + '" has left the group'
+                #    conn.sendall('left')
+                #else:
+                #    #group_num = conn.recv(1024)
+                #    groups[int(group_num)-1].append(user+1)
+                #    print '"' +  usernames[user] + '"' + ' has been added to group ' + str(group_num)
+                    #conn.sendall('join')
             elif option == str(5):
                 '''
                 Part-2:TODO: Read offline message
                 '''
                 print 'Sending ' + str(len(messages[user])) + ' messages'
-                conn.sendall('msg#' + str(len(messages[user])))
+                conn.sendall('msg#' + str(messages[user]))
 
                     #Send messages from the list
                     #for item in messages:

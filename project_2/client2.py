@@ -16,11 +16,15 @@ def receiveThread(s):
         try:
             reply_msg = s.recv(4096) # receive msg from server
             # You can add operations below once you receive msg
-            # from the server
+            # from the serve
 
             if "msg#" in reply_msg:
                 message_amount = reply_msg[4:]
-                #print 'This is msg amount received: ' + message_amount
+                print 'This is msg amount received: ' + message_amount
+            
+            elif 'Broadcast' in reply_msg:
+                print reply_msg
+
 
         except:
             print "Connection closed"
@@ -114,9 +118,7 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
 
     message = ""
     while True:
-        if 'Broadcast' in reply_msg:
-            print reply_msg
-        # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
+                # TODO: Part-1.4: User should be provided with a menu. Complete the missing options in the menu!
         message = raw_input("Choose an option (type the number): \n 1. Logout \n 2. Change password \n 3. Send messages \n 4. Group configuration \n 5. View messages \n Choose:")
         try :
             # TODO: Send the selected option to the server
@@ -216,30 +218,30 @@ if reply == 'valid': # TODO: use the correct string to replace xxx here!
                     sys.exit()
             if message == str(4):
                 #Group configuration
-                option = raw_input("Do you want to: 1. Join Group 2. Quit Group: \n")
-                if option == str(1):
-                    print 'Group 1'
-                    print 'Group 2'
+                group_option = raw_input("Do you want to: 1. Join Group 2. Quit Group: \n")
+                s.sendto(group_option,(host,port))
+                if group_option == str(1):
+                    print 'Group 1, Group 2'
                     group = raw_input("Enter the Group number you want to join: ")
                     try :
                         '''
                         Part-2:TODO: Join a particular group
                         '''
                         s.sendto(group,(host,port))
-                        if reply == 'join':
-                            print 'You have joined group ' + group
+                        #if reply == 'join':
+                        print 'You have joined group ' + group
                     except socket.error:
                         print 'group info sent failed'
                         sys.exit()
-                elif option == str(2):
+                elif group_option == str(2):
                     group = raw_input("Enter the Group number you want to quit: ")
                     try :
                         '''
                         Part-2:TODO: Quit a particular group
                         '''
                         s.sendto(group,(host,port))
-                        if reply == 'left':
-                            print 'You have left group ' + group
+                        #if reply == 'left':
+                        print 'You have left group ' + group
                     except socket.error:
                         print 'group info sent failed'
                         sys.exit()
